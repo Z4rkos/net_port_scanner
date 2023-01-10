@@ -3,12 +3,14 @@
 import socket
 import threading
 import time
+from get_args import get_args
 from colorama import Fore, init
 import warnings
 from cryptography import CryptographyDeprecationWarning
 warnings.filterwarnings("ignore", category=CryptographyDeprecationWarning)
 from scapy.all import ARPingResult
 import scapy.all as scapy
+
 
 
 # init()
@@ -70,7 +72,9 @@ def main() -> int:
 
     start = time.time()
 
-    network_address = "10.0.1.1/24"
+    args = get_args()
+
+    network_address = args["network"]
     print(f"{BLUE}[?] Scanning for hosts in the {network_address} network...\n")
     
     answered = scan_network(network_address)
