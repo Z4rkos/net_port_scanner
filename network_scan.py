@@ -2,15 +2,11 @@
 
 import socket
 import threading
+from queue import Queue
 import time
 from get_args import get_args
+from utils.scan_network import scan_network
 from colorama import Fore, init
-import warnings
-from cryptography import CryptographyDeprecationWarning
-warnings.filterwarnings("ignore", category=CryptographyDeprecationWarning)
-from scapy.all import ARPingResult
-import scapy.all as scapy
-
 
 
 # init()
@@ -21,30 +17,10 @@ WHITE = Fore.WHITE
 RED = Fore.RED
 
 
-def format_answered(answered: ARPingResult) -> list[dict]:
-    formated = list()
-    for answer in answered:
-        answer = [x for x in str(answer).split()[1:] if "=" in x]
-        one = dict()
-
-        for elem in answer:
-            elem_split = elem.split("=")
-            one[elem_split[0]] = elem_split[1]
-
-
-        formated.append(one)
-
-    return formated
-
-
-def scan_network(network_address: str):
-    answered, _ = scapy.arping(network_address,  verbose=False)
-    return answered
-
-
-def scan_port(host: str, port: int):
+def scan_port(host: str, port: int, queue: Queue):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.settimeout(1)
+    state = ""
+    s.settimeout(0.5)
     try:
         s.connect((host, port))
         state = "open"
@@ -54,14 +30,15 @@ def scan_port(host: str, port: int):
         state = "closed"
     finally:
         color = "GREEN" if state == "open" else "GRAY"
-        print(f"{eval(color)}[+] {port}: {state}")
+
+        queue.put((color, port, state))
         s.close()
 
-def set_threads(host, ports) -> list[threading.Thread]:
+def set_threads(host, ports, queue) -> list[threading.Thread]:
 
     threads = []
     for port in ports:
-        thread = threading.Thread(target=scan_port, args=(host, port))
+        thread = threading.Thread(target=scan_port, args=(host, port, queue))
         threads.append(thread)
 
     return threads
@@ -78,7 +55,6 @@ def main() -> int:
     print(f"{BLUE}[?] Scanning for hosts in the {network_address} network...\n")
     
     answered = scan_network(network_address)
-    formated = format_answered(answered)
 
     if not answered:
         print(f"{RED}[!] No hosts found, exiting...")
@@ -87,7 +63,7 @@ def main() -> int:
     print(f"{BLUE}[+] Networks:")
 
     print(f"{BLUE}----------------------")
-    for answer in formated:
+    for answer in answered:
         print(f"{GREEN}[+] {answer['psrc']}")
     print(f"{BLUE}----------------------")
 
@@ -95,14 +71,15 @@ def main() -> int:
 
     print()
     print(f"{BLUE}[?] Beggining port scans...")
-    for answer in formated:
+    queue = Queue()
+    for answer in answered:
         # print(answer["psrc"], answer["src"])
         host = answer["psrc"]
 
         print()
         print(f"{WHITE}{host}")
 
-        threads = set_threads(host, common_ports)
+        threads = set_threads(host, common_ports, queue)
 
         print(f"{BLUE}----------------------")
         for thread in threads:
@@ -111,8 +88,11 @@ def main() -> int:
         # Wait for the last set of threads to finish
         for thread in threads:
             thread.join()
+            color, port, state = queue.get()
+            print(f"{eval(color)}[+] {port} {state}")
         print(f"{BLUE}----------------------")
 
+    
     execution_time = round(time.time() - start, 2)
 
     print(f"Execution time: {execution_time} seconds.")
