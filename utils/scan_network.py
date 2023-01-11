@@ -26,3 +26,5 @@ def scan_network(network_address: str):
 
     answered = format_answered(answered)
     return answered
+
+

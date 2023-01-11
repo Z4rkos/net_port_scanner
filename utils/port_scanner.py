@@ -2,6 +2,8 @@ import concurrent.futures
 import socket
 from queue import Queue
 
+from . import global_variables as g
+
 def scan_port(host: str, port: int):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     state = ""
@@ -25,6 +27,24 @@ def port_scanner(host: str, ports: list[int], max_threads: int, queue: Queue):
             color = "GREEN" if state == "open" else "GRAY"
 
             queue.put((color, port, state))
+
+
+
+def run_port_scanner(ip):
+    common_ports = [22, 23, 25, 53, 67, 68, 80, 110, 143, 156, 443]
+
+    queue = Queue()
+
+    port_scanner(ip, common_ports, 30, queue)
+
+    print()
+    print(f"{g.WHITE}{ip}")
+    print(g.line)
+    while not queue.empty():
+        color, port, state = queue.get()
+        color = f"g.{color}"
+        print(f"{eval(color)}[+] {port}: {state}")
+    print(g.line)
 
 
 if __name__ == "__main__":
