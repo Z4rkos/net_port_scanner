@@ -14,4 +14,5 @@ width = 33
 line = f"{BLUE}{'-' * (width + 4)}"
 
 port_opts = {"all": range(65535),
-             "minimal": [22, 23, 25, 53, 67, 68, 80, 110, 143, 156, 443]}
+             "minimal": [22, 23, 25, 53, 67, 68, 80, 110, 143, 156, 443],
+             "well_known": range(1023)}

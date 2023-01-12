@@ -6,7 +6,7 @@ from scapy.all import ARPingResult
 import scapy.all as scapy
 
 
-def format_answered(answered: ARPingResult) -> list[dict]:
+def answered_to_dicts(answered: ARPingResult) -> list[dict]:
     formated = list()
     for answer in answered:
         answer = [x for x in str(answer).split()[1:] if "=" in x]
@@ -25,7 +25,7 @@ def format_answered(answered: ARPingResult) -> list[dict]:
 def scan_network(network_address: str):
     answered, _ = scapy.arping(network_address,  verbose=False)
 
-    answered = format_answered(answered)
+    answered = answered_to_dicts(answered)
     return answered
 
 

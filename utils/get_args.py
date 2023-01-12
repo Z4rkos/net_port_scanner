@@ -15,7 +15,7 @@ def get_args():
         "--ports",
         required=False,
         type=str,
-        choices=["all", "common", "minimal"],
+        choices=["all", "well_known", "minimal"],
         default="minimal"
     )
     parser.add_argument(
@@ -24,8 +24,7 @@ def get_args():
         type=int,
         default=30
     )
-    # parser.add_argument(
-    # )
+
     args = parser.parse_args()
 
     return vars(args)
