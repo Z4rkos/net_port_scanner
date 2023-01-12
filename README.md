@@ -7,6 +7,7 @@ It will first scan the given network or host, then do a simple port scan of the 
 -n/--network:
 - The host or network to scan. 
 - To scan an entire network, specify the network address with CIDR notation (192.168.0.0<u>/24</u>).
+
 -p/--ports: 
 - The ports to scan. 
 - These are divided into modes, Nmap style:
@@ -14,6 +15,7 @@ It will first scan the given network or host, then do a simple port scan of the 
     - "all" scans range(65535).
     - "well_known" scnns the well known ports (range(1023)).
 - Default: minimal.
+
 -t/--threads:
 - Max number of  threads to use for port scanning.
 - Default: 30.
