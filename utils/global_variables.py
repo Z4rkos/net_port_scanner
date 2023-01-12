@@ -1,3 +1,6 @@
+"""
+File for global variables and settings(?)
+"""
 from colorama import Fore
 
 
@@ -9,3 +12,6 @@ RED = Fore.RED
 
 width = 33
 line = f"{BLUE}{'-' * (width + 4)}"
+
+port_opts = {"all": range(65535),
+             "minimal": [22, 23, 25, 53, 67, 68, 80, 110, 143, 156, 443]}

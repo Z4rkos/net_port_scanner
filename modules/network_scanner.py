@@ -1,3 +1,4 @@
+from utils import global_variables as g
 import warnings
 from cryptography import CryptographyDeprecationWarning
 warnings.filterwarnings("ignore", category=CryptographyDeprecationWarning)
@@ -28,3 +29,25 @@ def scan_network(network_address: str):
     return answered
 
 
+def run_network_scanner(network_address: str):
+    # All the printing makes this sooooo ugly, but not sure how else to do it.
+
+    print(f"{g.BLUE}[?] Scanning for hosts in the {network_address} network\n")
+
+    answered = scan_network(network_address)
+
+    if not answered:
+        print(f"{g.RED}[!] No hosts found, exiting...")
+        return
+
+    print(f"{g.BLUE}[+] Networks:")
+
+    print(g.line)
+    print(f"IP{' ' * (g.width - 15)}MAC")
+    print(g.line)
+
+    for answer in answered:
+        print(f"{g.GREEN}[+] {answer['psrc']:<{g.width-len(answer['src'])}}{answer['src']}")
+    print(g.line)
+
+    return answered

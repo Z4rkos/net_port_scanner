@@ -10,6 +10,20 @@ def get_args():
         required=True,
         type=str
     )
+    parser.add_argument(
+        "-p",
+        "--ports",
+        required=False,
+        type=str,
+        choices=["all", "common", "minimal"],
+        default="minimal"
+    )
+    parser.add_argument(
+        "-t",
+        "--threads",
+        type=int,
+        default=30
+    )
     # parser.add_argument(
     # )
     args = parser.parse_args()
