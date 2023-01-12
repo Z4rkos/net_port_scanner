@@ -16,7 +16,6 @@ def answered_to_dicts(answered: ARPingResult) -> list[dict]:
             elem_split = elem.split("=")
             one[elem_split[0]] = elem_split[1]
 
-
         formated.append(one)
 
     return formated
@@ -30,8 +29,6 @@ def scan_network(network_address: str):
 
 
 def run_network_scanner(network_address: str):
-    # All the printing makes this sooooo ugly, but not sure how else to do it.
-
     print(f"{g.BLUE}[?] Scanning for hosts in the {network_address} network\n")
 
     answered = scan_network(network_address)

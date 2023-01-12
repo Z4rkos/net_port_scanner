@@ -1,10 +1,14 @@
 import concurrent.futures
 import socket
+from typing import Literal
 
 from utils import global_variables as g
 
 
-def scan_port(ip: str, port: int):
+state = Literal["", "open", "closed"]
+
+
+def scan_port(ip: str, port: int) -> tuple[state, int]:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     state = ""
     s.settimeout(0.5)
