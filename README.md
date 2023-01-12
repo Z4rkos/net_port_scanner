@@ -11,8 +11,8 @@ It will first scan the given network or host, then do a simple port scan of the 
 - The ports to scan. 
 - These are divided into modes, Nmap style:
     - "minimal" just scans the super common ports (22, 23, 25, 53, 67, 68, 80, 110, 143, 156, 443).
-    - "all" scans range(65535).
-    - "well_known" scnns the well known ports (range(1023)).
+    - "all" scans range(65536).
+    - "well_known" scnns the well known ports (range(1024)).
 - Default: minimal.
 -t/--threads:
 - Max number of  threads to use for port scanning.
