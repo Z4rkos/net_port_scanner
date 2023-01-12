@@ -2,6 +2,8 @@
 Just a little project I made for learning purposes.
 It will first scan the given network or host, then do a simple port scan of the host, or all the hosts found on the network.
 
+The name is obviously very creative, will change it if I decide to do something more with this.
+Might somwhow make this a part of Centipyde, would be cool to just have one tool that could do everything.
 
 ## Arguments:
 -n/--network:
